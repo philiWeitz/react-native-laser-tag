@@ -7,6 +7,7 @@ export const GUN_SET_GUN_DEVICE = createAction('GUN_SET_GUN_DEVICE');
 
 // Initial state
 const GunStateRecord = Immutable.Record({
+  id: PropType.string,
   name : PropType.string,
 });
 
