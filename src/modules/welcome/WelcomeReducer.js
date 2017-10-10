@@ -1,7 +1,6 @@
 
 import Immutable from 'immutable';
-import { loop, Effects } from 'redux-loop';
-import { handleActions, createAction } from 'redux-actions';
+import { handleActions } from 'redux-actions';
 
 // Initial state
 const WelcomeStateRecord = Immutable.Record({

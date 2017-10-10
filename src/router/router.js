@@ -1,11 +1,7 @@
 
-import React from 'react';
-
 import {
   NavigationActions,
-  TabBarBottom,
   StackNavigator,
-  TabNavigator
 } from 'react-navigation';
 
 import WelcomeView from '../modules/welcome/WelcomeView';
@@ -22,12 +18,11 @@ const IntroductionNavigator = StackNavigator({
 }, {
   initialRouteName: 'Intro',
   backBehavior: 'initialRoute',
-  headerBackTitle: null
+  headerBackTitle: null,
 });
 
-
 const navigateOnce = (getStateForAction) => (action, state) => {
-  const {type, routeName, customAction} = action;
+  const { type, routeName } = action;
 
   return (
     state &&
@@ -37,7 +32,8 @@ const navigateOnce = (getStateForAction) => (action, state) => {
 };
 
 
-IntroductionNavigator.router.getStateForAction = navigateOnce(IntroductionNavigator.router.getStateForAction);
+IntroductionNavigator.router.getStateForAction =
+  navigateOnce(IntroductionNavigator.router.getStateForAction);
 
 
 export {

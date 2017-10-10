@@ -1,12 +1,12 @@
 
 import { combineReducers } from 'redux-loop';
 
-import GunReducer from '../modules/gun/GunReducer';
+import BleDeviceReducer from '../modules/bleDevice/BleDeviceReducer';
 import WelcomeReducer from '../modules/welcome/WelcomeReducer';
 
 
 const combinedReducers = combineReducers({
-  gun: GunReducer,
+  bleDevice: BleDeviceReducer,
   welcome: WelcomeReducer,
 });
 

@@ -1,8 +1,7 @@
 
-import React from 'react';
 import {
   NativeModules,
-  NativeEventEmitter
+  NativeEventEmitter,
 } from 'react-native';
 
 import BleManager from 'react-native-ble-manager';
@@ -12,21 +11,25 @@ const BleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 // function = (device) => {}
 let onDeviceFoundCallback = null;
+// function = () => {}
+let onScanningStopCallback = null;
 
 function handleDisconnectedPeripheral(data) {
-  console.log('Disconnected from ' + data.peripheral);
+  console.debug(`Disconnected from ${data.peripheral}`);
 }
 
 function handleUpdateValueForCharacteristic(data) {
-  console.log('Received data from ' + data.peripheral + ' characteristic ' + data.characteristic, data.value);
+  console.debug(`Received data from ${data.peripheral} characteristic ${data.characteristic}, ${data.value}`);
 }
 
 function handleStopScan() {
-  console.log('Scan is stopped');
+  console.debug('Stopped scanning');
+  if (onScanningStopCallback) {
+    onScanningStopCallback();
+  }
 }
 
-function handleDiscoverPeripheral(peripheral){
-  console.log('Got ble peripheral', peripheral);
+function handleDiscoverPeripheral(peripheral) {
   if (onDeviceFoundCallback) {
     onDeviceFoundCallback(peripheral);
   }
@@ -35,37 +38,44 @@ function handleDiscoverPeripheral(peripheral){
 const BleUtil = {
 
   initBleUtil() {
-    BleManager.start({showAlert: false})
-      .then(() => {
-        // Success code
-        console.log('Module initialized');
-      });
+    return new Promise((resolve) => {
+      BleManager.start({ showAlert: false })
+        .then(() => {
+          console.debug('BLE Module initialized');
+          return resolve();
+        });
 
-    this.handlerDiscover = BleManagerEmitter.addListener(
-      'BleManagerDiscoverPeripheral', handleDiscoverPeripheral, null);
-    this.handlerStop = BleManagerEmitter.addListener(
-      'BleManagerStopScan', handleStopScan, null);
-    this.handlerDisconnect = BleManagerEmitter.addListener(
-      'BleManagerDisconnectPeripheral', handleDisconnectedPeripheral, null);
-    this.handlerUpdate = BleManagerEmitter.addListener(
-      'BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic, null);
+      this.handlerDiscover = BleManagerEmitter.addListener(
+        'BleManagerDiscoverPeripheral', handleDiscoverPeripheral, null);
+      this.handlerStop = BleManagerEmitter.addListener(
+        'BleManagerStopScan', handleStopScan, null);
+      this.handlerDisconnect = BleManagerEmitter.addListener(
+        'BleManagerDisconnectPeripheral', handleDisconnectedPeripheral, null);
+      this.handlerUpdate = BleManagerEmitter.addListener(
+        'BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic, null);
+    });
   },
 
-  startScanning(onDeviceFound) {
+  startScanning(onDeviceFound, onScanningStop) {
     BleManager.scan([], 5, true)
       .then(() => {
         // Success code
-        console.log('Scan started');
+        console.debug('Scan started');
         onDeviceFoundCallback = onDeviceFound;
+        onScanningStopCallback = onScanningStop;
       });
   },
 
   stopScanning() {
-    BleManager.stopScan()
-      .then(() => {
-        // Success code
-        console.log('Scan stopped');
-      });
+    return BleManager.stopScan();
+  },
+
+  getServices(device) {
+    return BleManager.retrieveServices(device.id);
+  },
+
+  connect(device) {
+    return BleManager.connect(device.id);
   },
 
   destroyBleUtil() {
@@ -73,7 +83,7 @@ const BleUtil = {
     this.handlerStop.remove();
     this.handlerDisconnect.remove();
     this.handlerUpdate.remove();
-  }
+  },
 
 };
 

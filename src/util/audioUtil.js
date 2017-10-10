@@ -2,7 +2,7 @@
 
 import Sound from 'react-native-sound';
 
-Sound.setCategory('Playback');
+Sound.setCategory('Playback', true);
 
 const reload = require('../../media/reload.mp3');
 const gunShot = require('../../media/gunshot.mp3');
@@ -11,12 +11,12 @@ function playSoundEffect(audioFile) {
   return new Promise((resolve, reject) => {
     const sound = new Sound(audioFile, (error) => {
       if (error) {
-        console.log(`failed to load the sound file ${audioFile}`, error);
-        return reject();
+        console.error(`failed to load the sound file ${audioFile}`, error);
+        reject();
       }
       sound.play(() => {
         sound.release();
-        return resolve();
+        resolve();
       });
     });
   });
@@ -26,7 +26,7 @@ const AudioUtil = {
 
   async playGunShot() {
     await playSoundEffect(gunShot);
-    return await playSoundEffect(reload);
+    return playSoundEffect(reload);
   },
 
 };
