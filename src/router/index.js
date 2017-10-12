@@ -9,12 +9,26 @@ import PairingView from '../modules/pairing/PairingView';
 import GameView from '../modules/game/GameView';
 
 
+const headerOptions = {
+  headerBackTitle: null,
+  headerTruncatedBackTitle: null,
+};
+
+
 const IntroductionNavigator = StackNavigator({
   Intro: {
     screen: WelcomeView,
+    navigationOptions: {
+      title: 'Laser Tag',
+      ...headerOptions,
+    },
   },
   Pairing: {
     screen: PairingView,
+    navigationOptions: {
+      title: 'Pairing',
+      ...headerOptions,
+    },
   },
 }, {
   initialRouteName: 'Intro',
@@ -26,6 +40,10 @@ const IntroductionNavigator = StackNavigator({
 const GameNavigator = StackNavigator({
   GameFrontPage: {
     screen: GameView,
+    navigationOptions: {
+      title: 'Game',
+      ...headerOptions,
+    },
   },
 }, {
   initialRouteName: 'GameFrontPage',
@@ -49,6 +67,7 @@ IntroductionNavigator.router.getStateForAction =
   navigateOnce(IntroductionNavigator.router.getStateForAction);
 GameNavigator.router.getStateForAction =
   navigateOnce(GameNavigator.router.getStateForAction);
+
 
 export {
   GameNavigator,

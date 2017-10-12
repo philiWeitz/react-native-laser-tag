@@ -1,9 +1,11 @@
 {
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "plugins": [
     "react",
     "jsx-a11y",
-    "import"
+    "import",
+    "flowtype-errors"
   ],
   "rules": {
     "no-console": 0,
@@ -13,6 +15,8 @@
     "jsx-a11y/href-no-hash": "off",
     "arrow-body-style": [0, "always"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/forbid-prop-types": [0, {}]
+    "react/forbid-prop-types": [0, {}],
+
+    "flowtype-errors/show-errors": 2
   }
 }

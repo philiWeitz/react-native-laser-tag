@@ -1,3 +1,4 @@
+// @flow
 
 import _ from 'lodash';
 import I18n from 'react-native-i18n';
@@ -22,8 +23,8 @@ function setDefaultLanguage() {
 }
 
 
-function translate(key, ...params) {
-  const s = I18n.t(key);
+function translate(key : string, ...params : Array<string|number>) : string {
+  const s : string = I18n.t(key);
 
   if (s.match(KEY_NOT_FOUND)) {
     console.warn('Key not found in localization file: ', s);
