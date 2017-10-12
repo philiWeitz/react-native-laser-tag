@@ -6,3 +6,6 @@ project(':react-native-sound').projectDir = new File(rootProject.projectDir, '..
 
 include ':react-native-ble-manager'
 project(':react-native-ble-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ble-manager/android')
+
+include ':app', ':react-native-i18n'
+project(':react-native-i18n').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-i18n/android')

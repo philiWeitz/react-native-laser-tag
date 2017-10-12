@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.zmxv.RNSound.RNSoundPackage;
 import it.innove.BleManagerPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -27,7 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new RNSoundPackage(),
-          new BleManagerPackage()
+          new BleManagerPackage(),
+          new RNI18nPackage()
       );
     }
   };

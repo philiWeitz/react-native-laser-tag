@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Text, View, ActivityIndicator } from 'react-native';
 
+import t from '../../util/locale';
 import BleUtil from '../../util/bleUtil';
 import AudioUtil from '../../util/audioUtil';
 import PairingContainer from './PairingContainer';
@@ -124,7 +125,7 @@ class PairingView extends React.Component {
   renderScanAgain(isScanning) {
     if (!isScanning) {
       return (
-        <Button text="Scan Again" onPress={this.onScanAgainPress} />
+        <Button text={t('pairing.scan_again')} onPress={this.onScanAgainPress} />
       );
     }
     return null;
@@ -134,7 +135,7 @@ class PairingView extends React.Component {
     if (!this.state.isConnecting) {
       return (
         <View>
-          <Text>BLE Devices:</Text>
+          <Text>{t('pairing.list_header')}</Text>
           <BleDeviceList bleDeviceList={this.state.bleDeviceList} onPress={this.onBleDevicePress} />
           {this.renderScanningActivityIndicator(this.state.isScanning)}
           {this.renderScanAgain(this.state.isScanning)}
@@ -148,8 +149,8 @@ class PairingView extends React.Component {
     return (
       <ModalInfoDialog
         isVisible={this.state.hasConnectionError}
-        headerText="Connection Error"
-        contentText="Unable to connect to device."
+        headerText={t('pairing.connection_error_heading')}
+        contentText={t('pairing.connection_error_content')}
         onButtonPress={() => { this.setState({ hasConnectionError: false }); }}
       />
     );

@@ -8,6 +8,8 @@ import { NavigationActions } from 'react-navigation';
 import Button from '../../components/button';
 import WelcomeContainer from './WelcomeContainer';
 
+import t from '../../util/locale';
+
 
 const styles = StyleSheet.create({
   body: {
@@ -40,7 +42,7 @@ const WelcomeView = ({ navigation }) => {
     <View style={styles.body}>
       <View style={styles.container}>
         <Button
-          text="Search for devices"
+          text={t('welcome.search_for_devices')}
           onPress={onPairingWithDevicePress}
           containerStyle={styles.button}
         />
