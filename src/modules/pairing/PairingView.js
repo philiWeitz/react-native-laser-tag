@@ -3,13 +3,16 @@ import React from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 import { Text, View, ActivityIndicator } from 'react-native';
 
 import BleUtil from '../../util/bleUtil';
+import AudioUtil from '../../util/audioUtil';
 import PairingContainer from './PairingContainer';
 
 import Button from '../../components/button';
 import BleDeviceList from '../../components/bleDeviceList';
+import ModalInfoDialog from '../../components/modalInfoDialog';
 
 
 class PairingView extends React.Component {
@@ -21,6 +24,7 @@ class PairingView extends React.Component {
       bleDeviceList: List([]),
       isScanning: true,
       isConnecting: false,
+      hasConnectionError: false,
     };
 
     this.onScanAgainPress = this.onScanAgainPress.bind(this);
@@ -28,6 +32,7 @@ class PairingView extends React.Component {
     this.onBleDeviceFound = this.onBleDeviceFound.bind(this);
     this.onBleScanningStop = this.onBleScanningStop.bind(this);
     this.renderContent = this.renderContent.bind(this);
+    this.renderConnectionErrorModalDialog = this.renderConnectionErrorModalDialog.bind(this);
   }
 
   componentWillMount() {
@@ -61,13 +66,13 @@ class PairingView extends React.Component {
       console.debug('Device service info:', services);
 
       if (!services) {
-        this.setState({ isConnecting: true });
+        this.setState({ isConnecting: false, hasConnectionError: true });
         console.warn('Error connecting to device');
         return;
       }
 
       if (!services.characteristics || services.characteristics.size <= 0) {
-        this.setState({ isConnecting: true });
+        this.setState({ isConnecting: false, hasConnectionError: true });
         console.warn('Error: no characteristics found');
         return;
       }
@@ -76,21 +81,30 @@ class PairingView extends React.Component {
         name: services.name,
         id: services.id,
         characteristic: services.characteristics[0],
+
       }).then(() => {
-        // navigate!
-        this.setState({ isConnecting: false });
-        console.debug('Connected with valid characteristics');
+        this.navigateToGameView(this.props.navigation);
       });
 
     }).catch((error) => {
       console.warn(`Error connecting to device "${device.name}" - `, error);
-      this.setState({ isConnecting: false });
+      this.setState({ isConnecting: false, hasConnectionError: true });
     });
   }
 
   onScanAgainPress() {
     this.setState({ isScanning: true });
     BleUtil.startScanning(this.onBleDeviceFound, this.onBleScanningStop);
+    AudioUtil.playGunShot();
+  }
+
+  navigateToGameView(navigation) {
+    if (navigation) {
+      const navigateAction = NavigationActions.navigate({
+        routeName: 'GameFrontPage',
+      });
+      navigation.dispatch(navigateAction);
+    }
   }
 
   renderScanningActivityIndicator(isScanning) {
@@ -130,10 +144,22 @@ class PairingView extends React.Component {
     return null;
   }
 
+  renderConnectionErrorModalDialog() {
+    return (
+      <ModalInfoDialog
+        isVisible={this.state.hasConnectionError}
+        headerText="Connection Error"
+        contentText="Unable to connect to device."
+        onButtonPress={() => { this.setState({ hasConnectionError: false }); }}
+      />
+    );
+  }
+
   render() {
     return (
       <View>
         {this.renderContent()}
+        {this.renderConnectionErrorModalDialog()}
         {this.renderConnectingActivityIndicator(this.state.isConnecting)}
       </View>
     );
@@ -143,6 +169,7 @@ class PairingView extends React.Component {
 
 
 PairingView.propTypes = {
+  navigation: PropTypes.object.isRequired,
   setBleDeviceData: PropTypes.func.isRequired,
 };
 

@@ -5,12 +5,11 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import store from './store';
-import { IntroductionNavigator } from '../router/router';
-
+import AppView from '../modules/app/AppView';
 
 const ReduxApp = () => (
   <Provider store={store}>
-    <IntroductionNavigator />
+    <AppView />
   </Provider>
 );
 

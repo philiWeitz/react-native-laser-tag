@@ -1,5 +1,4 @@
 
-import PropType from 'prop-types';
 import Immutable from 'immutable';
 import { handleActions, createAction } from 'redux-actions';
 
@@ -7,9 +6,9 @@ export const BLE_DEVICE_SET_DEVICE_DATA = createAction('BLE_DEVICE_SET_DEVICE_DA
 
 // Initial state
 const BleDeviceStateRecord = Immutable.Record({
-  id: PropType.string,
-  name: PropType.string,
-  characteristic: PropType.object,
+  id: null,
+  name: null,
+  characteristic: null,
 });
 
 const initialState = new BleDeviceStateRecord();

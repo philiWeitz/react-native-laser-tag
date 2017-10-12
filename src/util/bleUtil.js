@@ -2,6 +2,8 @@
 import {
   NativeModules,
   NativeEventEmitter,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 
 import BleManager from 'react-native-ble-manager';
@@ -53,6 +55,24 @@ const BleUtil = {
         'BleManagerDisconnectPeripheral', handleDisconnectedPeripheral, null);
       this.handlerUpdate = BleManagerEmitter.addListener(
         'BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic, null);
+
+      if (Platform.OS === 'android' && Platform.Version >= 23) {
+        PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
+          if (result) {
+            console.debug('Android permission is OK');
+          } else {
+            PermissionsAndroid.requestPermission(
+              PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((permissionResult) => {
+              if (permissionResult) {
+                console.debug('User accept');
+              } else {
+                console.debug('User refuse');
+              }
+            });
+          }
+        });
+      }
     });
   },
 
@@ -76,6 +96,17 @@ const BleUtil = {
 
   connect(device) {
     return BleManager.connect(device.id);
+  },
+
+  async isBleDeviceBonded(device) {
+    // always return true for ios devices
+    if (Platform.OS === 'ios') {
+      return Promise.resolve(true);
+    }
+    const result = await BleManager.createBond(device.id).catch(() => {
+      return false;
+    });
+    return result === undefined;
   },
 
   destroyBleUtil() {
