@@ -41,7 +41,7 @@ const BleDeviceList = ({ bleDeviceList, onPress }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {bleDeviceList.map((device, idx) => {
+      {bleDeviceList.sortBy((device) => device.rssi).map((device, idx) => {
         return deviceContainer(device, idx);
       }).toArray()}
     </ScrollView>

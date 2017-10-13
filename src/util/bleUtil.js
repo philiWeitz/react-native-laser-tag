@@ -15,6 +15,10 @@ const BleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 let onDeviceFoundCallback = null;
 // function = () => {}
 let onScanningStopCallback = null;
+// bluetooth state
+let bluetoothEnabled = false;
+// function = (data) => {}
+let dataCallback = null;
 
 function handleDisconnectedPeripheral(data) {
   console.debug(`Disconnected from ${data.peripheral}`);
@@ -22,6 +26,9 @@ function handleDisconnectedPeripheral(data) {
 
 function handleUpdateValueForCharacteristic(data) {
   console.debug(`Received data from ${data.peripheral} characteristic ${data.characteristic}, ${data.value}`);
+  if (dataCallback) {
+    dataCallback(data);
+  }
 }
 
 function handleStopScan() {
@@ -37,6 +44,11 @@ function handleDiscoverPeripheral(peripheral) {
   }
 }
 
+function handlerBluetoothOnOffState(args) {
+  bluetoothEnabled = args.state === 'on';
+  console.debug('Bluetooth state: ', args.state);
+}
+
 const BleUtil = {
 
   initBleUtil() {
@@ -44,7 +56,14 @@ const BleUtil = {
       BleManager.start({ showAlert: false })
         .then(() => {
           console.debug('BLE Module initialized');
-          return resolve();
+
+          // ensure that the state was checked
+          const tmp = BleManagerEmitter.addListener(
+            'BleManagerDidUpdateState', (args) => {
+              tmp.remove();
+              handlerBluetoothOnOffState(args);
+              resolve();
+            }, null);
         });
 
       this.handlerDiscover = BleManagerEmitter.addListener(
@@ -55,6 +74,8 @@ const BleUtil = {
         'BleManagerDisconnectPeripheral', handleDisconnectedPeripheral, null);
       this.handlerUpdate = BleManagerEmitter.addListener(
         'BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic, null);
+      this.handlerBluetoothState = BleManagerEmitter.addListener(
+        'BleManagerDidUpdateState', handlerBluetoothOnOffState, null);
 
       if (Platform.OS === 'android' && Platform.Version >= 23) {
         PermissionsAndroid.check(
@@ -73,7 +94,17 @@ const BleUtil = {
           }
         });
       }
+      // get bluetooth state (on or off)
+      BleManager.checkState();
     });
+  },
+
+  setDataCallback(callback) {
+    dataCallback = callback;
+  },
+
+  isBluetoothEnabled() {
+    return bluetoothEnabled;
   },
 
   startScanning(onDeviceFound, onScanningStop) {
@@ -98,12 +129,8 @@ const BleUtil = {
     return BleManager.connect(device.id);
   },
 
-  async isBleDeviceBonded(device) {
-    // always return true for ios devices
-    if (Platform.OS === 'ios') {
-      return Promise.resolve(true);
-    }
-    const result = await BleManager.createBond(device.id).catch(() => {
+  async startNotify(id, serviceId, characteristicId) {
+    const result = await BleManager.startNotification(id, serviceId, characteristicId).catch(() => {
       return false;
     });
     return result === undefined;
@@ -114,6 +141,7 @@ const BleUtil = {
     this.handlerStop.remove();
     this.handlerDisconnect.remove();
     this.handlerUpdate.remove();
+    this.handlerBluetoothState.remove();
   },
 
 };

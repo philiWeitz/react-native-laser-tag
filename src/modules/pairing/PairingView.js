@@ -1,4 +1,5 @@
 
+import _ from 'lodash';
 import React from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
@@ -8,12 +9,31 @@ import { Text, View, ActivityIndicator } from 'react-native';
 
 import t from '../../util/locale';
 import BleUtil from '../../util/bleUtil';
-import AudioUtil from '../../util/audioUtil';
 import PairingContainer from './PairingContainer';
 
 import Button from '../../components/button';
 import BleDeviceList from '../../components/bleDeviceList';
 import ModalInfoDialog from '../../components/modalInfoDialog';
+
+const HM_10_SERVICE = '0000ffe0-0000-1000-8000-00805f9b34fb';
+const HM_10_CHARACTERISTIC = '0000ffe1-0000-1000-8000-00805f9b34fb';
+
+
+function getHM10Characteristic(services) {
+  if (!services) {
+    console.warn('Error: services is not defined');
+    return null;
+  }
+
+  // get the correct characteristics for the HM-10 module
+  return _.find(services.characteristics, (item) => {
+    if (item.service && item.characteristic) {
+      return item.service.toLowerCase() === HM_10_SERVICE &&
+        item.characteristic.toLowerCase() === HM_10_CHARACTERISTIC;
+    }
+    return false;
+  });
+}
 
 
 class PairingView extends React.Component {
@@ -23,23 +43,29 @@ class PairingView extends React.Component {
 
     this.state = {
       bleDeviceList: List([]),
-      isScanning: true,
+      isScanning: false,
       isConnecting: false,
       hasConnectionError: false,
+      showBluetoothDisabledDialog: false,
     };
 
+    this.renderContent = this.renderContent.bind(this);
     this.onScanAgainPress = this.onScanAgainPress.bind(this);
     this.onBleDevicePress = this.onBleDevicePress.bind(this);
     this.onBleDeviceFound = this.onBleDeviceFound.bind(this);
     this.onBleScanningStop = this.onBleScanningStop.bind(this);
-    this.renderContent = this.renderContent.bind(this);
     this.renderConnectionErrorModalDialog = this.renderConnectionErrorModalDialog.bind(this);
+    this.renderBluetoothDisabledModalDialog = this.renderBluetoothDisabledModalDialog.bind(this);
   }
 
   componentWillMount() {
     BleUtil.initBleUtil().then(() => {
-      BleUtil.startScanning(this.onBleDeviceFound, this.onBleScanningStop);
+      this.onScanAgainPress();
     });
+  }
+
+  componentWillUnmount() {
+    BleUtil.destroyBleUtil();
   }
 
   onBleScanningStop() {
@@ -66,22 +92,29 @@ class PairingView extends React.Component {
       const services = await BleUtil.getServices(device);
       console.debug('Device service info:', services);
 
-      if (!services) {
+      // get the HM-10 characteristic
+      const characteristic = getHM10Characteristic(services);
+      if (!characteristic) {
         this.setState({ isConnecting: false, hasConnectionError: true });
-        console.warn('Error connecting to device');
+        console.warn('Error: no matching characteristics found');
         return;
       }
 
-      if (!services.characteristics || services.characteristics.size <= 0) {
+      // subscribe to get notifications
+      const isNotifyConnected = await BleUtil.startNotify(
+        services.id, characteristic.service, characteristic.characteristic);
+
+      if (!isNotifyConnected) {
         this.setState({ isConnecting: false, hasConnectionError: true });
-        console.warn('Error: no characteristics found');
+        console.warn('Error: unable to connect to notify characteristic');
         return;
       }
 
+      // set device data and navigate to game view
       this.props.setBleDeviceData({
         name: services.name,
         id: services.id,
-        characteristic: services.characteristics[0],
+        characteristic,
 
       }).then(() => {
         this.navigateToGameView(this.props.navigation);
@@ -94,9 +127,12 @@ class PairingView extends React.Component {
   }
 
   onScanAgainPress() {
-    this.setState({ isScanning: true });
-    BleUtil.startScanning(this.onBleDeviceFound, this.onBleScanningStop);
-    AudioUtil.playGunShot();
+    if (BleUtil.isBluetoothEnabled()) {
+      this.setState({ isScanning: true });
+      BleUtil.startScanning(this.onBleDeviceFound, this.onBleScanningStop);
+    } else {
+      this.setState({ showBluetoothDisabledDialog: true });
+    }
   }
 
   navigateToGameView(navigation) {
@@ -156,11 +192,23 @@ class PairingView extends React.Component {
     );
   }
 
+  renderBluetoothDisabledModalDialog() {
+    return (
+      <ModalInfoDialog
+        isVisible={this.state.showBluetoothDisabledDialog}
+        headerText={t('pairing.bluetooth_disabled_heading')}
+        contentText={t('pairing.bluetooth_disabled_content')}
+        onButtonPress={() => { this.setState({ showBluetoothDisabledDialog: false }); }}
+      />
+    );
+  }
+
   render() {
     return (
       <View>
         {this.renderContent()}
         {this.renderConnectionErrorModalDialog()}
+        {this.renderBluetoothDisabledModalDialog()}
         {this.renderConnectingActivityIndicator(this.state.isConnecting)}
       </View>
     );

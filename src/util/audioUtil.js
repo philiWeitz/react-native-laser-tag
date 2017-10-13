@@ -25,7 +25,10 @@ function playSoundEffect(audioFile) {
 const AudioUtil = {
 
   async playGunShot() : Promise<any> {
-    await playSoundEffect(gunShot);
+    return playSoundEffect(gunShot);
+  },
+
+  async playReload() : Promise<any> {
     return playSoundEffect(reload);
   },
 
