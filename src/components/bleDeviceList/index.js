@@ -2,7 +2,7 @@
 import React from 'react';
 import {
   Text,
-  ScrollView,
+  View,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -23,6 +23,18 @@ const styles = StyleSheet.create({
   },
 });
 
+
+function sortByNumber(a, b) {
+  if (a < b) {
+    return 1;
+  }
+  if (a > b) {
+    return -1;
+  }
+  return 0;
+}
+
+
 const BleDeviceList = ({ bleDeviceList, onPress }) => {
 
   const onDevicePress = (device) => {
@@ -34,20 +46,21 @@ const BleDeviceList = ({ bleDeviceList, onPress }) => {
   const deviceContainer = (device, idx) => {
     return (
       <TouchableOpacity key={`ble-${idx}`} style={styles.deviceContainer} onPress={() => { onDevicePress(device); }}>
-        <Text>{device.name}</Text>
+        <Text>{device.name} - {device.id} (${device.rssi})</Text>
       </TouchableOpacity>
     );
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {bleDeviceList.sortBy((device) => device.rssi).map((device, idx) => {
+    <View style={styles.container}>
+      {bleDeviceList.sort((a, b) => { return sortByNumber(a.rssi, b.rssi); }).map((device, idx) => {
         return deviceContainer(device, idx);
       }).toArray()}
-    </ScrollView>
+    </View>
   );
 
 };
+
 
 BleDeviceList.propTypes = {
   bleDeviceList: list,
@@ -57,5 +70,6 @@ BleDeviceList.propTypes = {
 BleDeviceList.defaultProps = {
   bleDeviceList: List(),
 };
+
 
 export default BleDeviceList;

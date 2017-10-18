@@ -4,8 +4,9 @@ import React from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import autoBind from 'react-autobind';
 import { NavigationActions } from 'react-navigation';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 
 import t from '../../util/locale';
 import BleUtil from '../../util/bleUtil';
@@ -36,6 +37,16 @@ function getHM10Characteristic(services) {
 }
 
 
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+  },
+  button: {
+    margin: 20,
+  },
+});
+
+
 class PairingView extends React.Component {
 
   constructor(props) {
@@ -48,14 +59,7 @@ class PairingView extends React.Component {
       hasConnectionError: false,
       showBluetoothDisabledDialog: false,
     };
-
-    this.renderContent = this.renderContent.bind(this);
-    this.onScanAgainPress = this.onScanAgainPress.bind(this);
-    this.onBleDevicePress = this.onBleDevicePress.bind(this);
-    this.onBleDeviceFound = this.onBleDeviceFound.bind(this);
-    this.onBleScanningStop = this.onBleScanningStop.bind(this);
-    this.renderConnectionErrorModalDialog = this.renderConnectionErrorModalDialog.bind(this);
-    this.renderBluetoothDisabledModalDialog = this.renderBluetoothDisabledModalDialog.bind(this);
+    autoBind(this);
   }
 
   componentWillMount() {
@@ -78,7 +82,7 @@ class PairingView extends React.Component {
     });
 
     if (device.name && !alreadyIncluded) {
-      console.debug('Got valid ble device', device.name);
+      console.debug(`Got valid ble device ${device.name} - ${device.id} - ${device.rssi}`);
       this.setState({ bleDeviceList: this.state.bleDeviceList.push(device) });
     }
   }
@@ -117,7 +121,7 @@ class PairingView extends React.Component {
         characteristic,
 
       }).then(() => {
-        this.navigateToGameView(this.props.navigation);
+        this.navigateToGameView();
       });
 
     }).catch((error) => {
@@ -135,33 +139,37 @@ class PairingView extends React.Component {
     }
   }
 
-  navigateToGameView(navigation) {
-    if (navigation) {
+  navigateToGameView() {
+    if (this.props.navigation) {
       const navigateAction = NavigationActions.navigate({
         routeName: 'GameFrontPage',
       });
-      navigation.dispatch(navigateAction);
+      this.props.navigation.dispatch(navigateAction);
     }
   }
 
-  renderScanningActivityIndicator(isScanning) {
-    if (isScanning) {
+  renderScanningActivityIndicator() {
+    if (this.state.isScanning) {
       return <ActivityIndicator />;
     }
     return null;
   }
 
-  renderConnectingActivityIndicator(isConnecting) {
-    if (isConnecting) {
+  renderConnectingActivityIndicator() {
+    if (this.state.isConnecting) {
       return <ActivityIndicator />;
     }
     return null;
   }
 
-  renderScanAgain(isScanning) {
-    if (!isScanning) {
+  renderScanAgain() {
+    if (!this.state.isScanning) {
       return (
-        <Button text={t('pairing.scan_again')} onPress={this.onScanAgainPress} />
+        <Button
+          containerStyle={styles.button}
+          text={t('pairing.scan_again')}
+          onPress={this.onScanAgainPress}
+        />
       );
     }
     return null;
@@ -173,8 +181,8 @@ class PairingView extends React.Component {
         <View>
           <Text>{t('pairing.list_header')}</Text>
           <BleDeviceList bleDeviceList={this.state.bleDeviceList} onPress={this.onBleDevicePress} />
-          {this.renderScanningActivityIndicator(this.state.isScanning)}
-          {this.renderScanAgain(this.state.isScanning)}
+          {this.renderScanningActivityIndicator()}
+          {this.renderScanAgain()}
         </View>
       );
     }
@@ -205,12 +213,12 @@ class PairingView extends React.Component {
 
   render() {
     return (
-      <View>
+      <ScrollView style={styles.container}>
         {this.renderContent()}
         {this.renderConnectionErrorModalDialog()}
         {this.renderBluetoothDisabledModalDialog()}
-        {this.renderConnectingActivityIndicator(this.state.isConnecting)}
-      </View>
+        {this.renderConnectingActivityIndicator()}
+      </ScrollView>
     );
   }
 

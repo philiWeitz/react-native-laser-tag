@@ -14,6 +14,8 @@ import java.util.List;
 import com.zmxv.RNSound.RNSoundPackage;
 import it.innove.BleManagerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.corbt.keepawake.KCKeepAwakePackage;
+import org.capslock.RNDeviceBrightness.RNDeviceBrightness;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -29,7 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new RNSoundPackage(),
           new BleManagerPackage(),
-          new RNI18nPackage()
+          new RNI18nPackage(),
+          new KCKeepAwakePackage(),
+          new RNDeviceBrightness()
       );
     }
   };

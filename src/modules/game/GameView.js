@@ -1,14 +1,19 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import autoBind from 'react-autobind';
 import { Text, View } from 'react-native';
+import KeepAwake from 'react-native-keep-awake';
 
 import GameContainer from './GameContainer';
+import Button from '../../components/button';
 
 import BleUtil from '../../util/bleUtil';
 import AudioUtil from '../../util/audioUtil';
+import BrightnessUtil from '../../util/brightnessUtil';
 
 const BULLETS_AMOUNT = 5;
+
 
 class GameView extends React.Component {
 
@@ -18,9 +23,12 @@ class GameView extends React.Component {
     this.state = {
       hitCount: 0,
       shotCount: 0,
+      defaultBrightness: 1.0,
+      isBrightnessLowered: false,
     };
 
-    this.dataCallback = this.dataCallback.bind(this);
+    autoBind(this);
+    Promise.resolve(this.getCurrentScreenBrightness());
   }
 
   componentWillMount() {
@@ -31,11 +39,23 @@ class GameView extends React.Component {
     BleUtil.setDataCallback(null);
   }
 
+  async getCurrentScreenBrightness() {
+    const brightness = await BrightnessUtil.getBrightness();
+    console.debug('Brightness level: ', brightness);
+    this.setState({ defaultBrightness: brightness });
+  }
+
+  setScreenBrightness(brightness) {
+    BrightnessUtil.setBrightness(brightness);
+    this.setState({ isBrightnessLowered: !this.state.isBrightnessLowered });
+  }
+
   dataCallback(data) {
     console.debug('Data received: ', data);
 
-    if (data.value.startsWith('SHOT')) {
+    if (data.value.startsWith('HIT')) {
       this.setState({ hitCount: this.state.hitCount + 1 });
+      AudioUtil.playDying();
 
     } else if (data.value.startsWith('FIRE')) {
       // if the shot count is bigger than the bullet size -> don't play a sound
@@ -53,12 +73,28 @@ class GameView extends React.Component {
     }
   }
 
+  renderBrightnessButton() {
+    if (this.state.isBrightnessLowered) {
+      return (
+        <Button
+          text={'Reset Screen Brightness'}
+          onPress={() => { this.setScreenBrightness(this.state.defaultBrightness); }}
+        />
+      );
+    }
+    return (
+      <Button text={'Lower Screen Brightness'} onPress={() => { this.setScreenBrightness(0.0); }} />
+    );
+  }
+
   render() {
     return (
       <View>
         <Text>Game View</Text>
-        <Text>Hit count: ${this.state.hitCount}</Text>
-        <Text>Bullets left: ${Math.max(0, this.state.shotCount - BULLETS_AMOUNT)}</Text>
+        <Text>Hit count: {this.state.hitCount}</Text>
+        <Text>Bullets left: {Math.max(0, BULLETS_AMOUNT - this.state.shotCount)}</Text>
+        {this.renderBrightnessButton()}
+        <KeepAwake />
       </View>
     );
   }

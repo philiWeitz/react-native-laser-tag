@@ -7,7 +7,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "eslint": "eslint ./src",
-    "flow": "flow"
+    "flow": "flow",
+    "test": "jest"
   },
   "dependencies": {
     "babel-eslint": "^8.0.1",
@@ -18,11 +19,14 @@
     "immutable": "^3.8.1",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
-    "react": "16.0.0-alpha.12",
+    "react": "16.0.0-beta.5",
+    "react-autobind": "^1.0.6",
     "react-immutable-proptypes": "^2.1.0",
-    "react-native": "0.46.0",
+    "react-native": "0.49.3",
     "react-native-ble-manager": "6.2.3",
+    "react-native-device-brightness": "^1.2.0",
     "react-native-i18n": "^2.0.7",
+    "react-native-keep-awake": "^2.0.5",
     "react-native-modal": "^4.0.0",
     "react-native-sound": "^0.10.4",
     "react-navigation": "^1.0.0-beta.13",
@@ -35,6 +39,9 @@
   "devDependencies": {
     "babel-jest": "20.0.3",
     "babel-preset-react-native": "^4.0.0",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.2",
+    "enzyme-to-json": "^3.1.4",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-plugin-flowtype-errors": "^3.3.3",
@@ -42,10 +49,18 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.1.0",
     "flow-bin": "^0.56.0",
-    "jest": "20.0.4",
-    "react-test-renderer": "16.0.0-alpha.12"
+    "jest": "21.3.0-beta.2",
+    "react-native-mock-render": "^0.0.11",
+    "react-test-renderer": "16.0.0-alpha.12",
+    "redux-mock-store": "^1.3.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "verbose": true,
+    "clearMocks": true,
+    "setupFiles": [
+      "./__tests__/setup.js"
+    ],
+    "testRegex": "(/__tests__/.*\\.test)\\.js$"
   }
 }

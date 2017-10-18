@@ -12,9 +12,10 @@ const KEY_NOT_FOUND = /\[missing "[a-zA-Z0-9._]*" translation\]/i;
 function setDefaultLanguage() {
   // set default language if we don't support your device language
   const supportedLang = _.keys(I18n.translations);
+  const localeLang = I18n.locale ? I18n.locale : supportedLang[0];
 
   const langSupported = _.find(supportedLang, (lang) => {
-    return I18n.locale.startsWith(lang);
+    return localeLang.startsWith(lang);
   });
 
   if (!langSupported) {
