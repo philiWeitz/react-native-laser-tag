@@ -77,13 +77,13 @@ class GameView extends React.Component {
     if (this.state.isBrightnessLowered) {
       return (
         <Button
-          text={'Reset Screen Brightness'}
+          text="Reset Screen Brightness"
           onPress={() => { this.setScreenBrightness(this.state.defaultBrightness); }}
         />
       );
     }
     return (
-      <Button text={'Lower Screen Brightness'} onPress={() => { this.setScreenBrightness(0.0); }} />
+      <Button text="Lower Screen Brightness" onPress={() => { this.setScreenBrightness(0.0); }} />
     );
   }
 

@@ -1,6 +1,6 @@
 /* global Headers, fetch */
 
-const API_ROOT = process.env.API_ROOT;
+const { API_ROOT } = process.env;
 
 export function callApi(endpoint, body, method = 'GET') {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;

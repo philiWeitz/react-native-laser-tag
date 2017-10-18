@@ -1,13 +1,14 @@
+// @flow
 
 import DeviceBrightness from 'react-native-device-brightness';
 
 const BrightnessUtil = {
 
-  async getBrightness() {
+  async getBrightness() : Promise<number> {
     return DeviceBrightness.getBrightnessLevel();
   },
 
-  setBrightness(value) {
+  setBrightness(value : number) {
     DeviceBrightness.setBrightnessLevel(value);
   },
 };

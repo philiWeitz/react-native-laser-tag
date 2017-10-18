@@ -18,7 +18,8 @@ function setDefaultLanguage() {
     return localeLang.startsWith(lang);
   });
 
-  if (!langSupported) {
+  if (!langSupported && supportedLang.length > 0) {
+    // eslint-disable-next-line prefer-destructuring
     I18n.locale = supportedLang[0];
   }
 }
