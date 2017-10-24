@@ -1,4 +1,4 @@
-
+// @flow
 
 import React from 'react';
 import {
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
 });
 
 
-const ModalInfoDialog = ({ isVisible, headerText, contentText, onButtonPress }) => {
+const ModalInfoDialog = ({ isVisible, headerText, contentText, onButtonPress } : {
+  isVisible : boolean, headerText : string, contentText : string, onButtonPress : () => null }) => {
 
   const onOkButtonClick = () => {
     if (onButtonPress) {

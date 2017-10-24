@@ -1,3 +1,4 @@
+// @flow
 
 import React from 'react';
 import {
@@ -12,6 +13,9 @@ import PropTypes from 'prop-types';
 import { List } from 'immutable';
 import { list } from 'react-immutable-proptypes';
 
+import type { List as ListType } from 'immutable';
+import type { BleDeviceType } from '../../model/ModelFlowTypes';
+
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
@@ -24,7 +28,7 @@ const styles = StyleSheet.create({
 });
 
 
-function sortByNumber(a, b) {
+function sortByNumber(a : number, b : number) {
   if (a < b) {
     return 1;
   }
@@ -35,7 +39,8 @@ function sortByNumber(a, b) {
 }
 
 
-const BleDeviceList = ({ bleDeviceList, onPress }) => {
+const BleDeviceList = ({ bleDeviceList, onPress } :
+  {bleDeviceList? : ListType<BleDeviceType>, onPress : (BleDeviceType) => mixed}) => {
 
   const onDevicePress = (device) => {
     if (onPress) {
@@ -43,17 +48,18 @@ const BleDeviceList = ({ bleDeviceList, onPress }) => {
     }
   };
 
-  const deviceContainer = (device, idx) => {
+  const deviceContainer = (device : BleDeviceType, idx : number) => {
     return (
       <TouchableOpacity key={`ble-${idx}`} style={styles.deviceContainer} onPress={() => { onDevicePress(device); }}>
-        <Text>{device.name} - {device.id} (${device.rssi})</Text>
+        <Text>{device.name} - {device.id} ({device.rssi})</Text>
       </TouchableOpacity>
     );
   };
 
   return (
     <View style={styles.container}>
-      {bleDeviceList.sort((a, b) => { return sortByNumber(a.rssi, b.rssi); }).map((device, idx) => {
+      {bleDeviceList && bleDeviceList.sort(
+        (a, b) => { return sortByNumber(a.rssi, b.rssi); }).map((device, idx) => {
         return deviceContainer(device, idx);
       }).toArray()}
     </View>
@@ -67,9 +73,9 @@ BleDeviceList.propTypes = {
   onPress: PropTypes.func.isRequired,
 };
 
+
 BleDeviceList.defaultProps = {
   bleDeviceList: List(),
 };
-
 
 export default BleDeviceList;

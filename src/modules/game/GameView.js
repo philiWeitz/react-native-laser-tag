@@ -1,9 +1,11 @@
+// @flow
 
 import React from 'react';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
+import Modal from 'react-native-modal';
 
 import GameContainer from './GameContainer';
 import Button from '../../components/button';
@@ -15,7 +17,17 @@ import BrightnessUtil from '../../util/brightnessUtil';
 const BULLETS_AMOUNT = 5;
 
 
-class GameView extends React.Component {
+type PropTypes = {};
+
+type StateTypes = {
+  hitCount: number,
+  shotCount: number,
+  defaultBrightness: number,
+  isBrightnessLowered: boolean,
+};
+
+
+class GameView extends React.Component<PropTypes, StateTypes> {
 
   constructor(props) {
     super(props);
@@ -28,7 +40,7 @@ class GameView extends React.Component {
     };
 
     autoBind(this);
-    Promise.resolve(this.getCurrentScreenBrightness());
+    this.getCurrentScreenBrightness();
   }
 
   componentWillMount() {
@@ -87,6 +99,21 @@ class GameView extends React.Component {
     );
   }
 
+  renderModalOverlay() {
+    if (this.state.isBrightnessLowered) {
+      return (
+        <Modal visible transparent animationInTiming={10} animationOutTiming={10} >
+          <TouchableWithoutFeedback
+            onPress={() => { this.setScreenBrightness(this.state.defaultBrightness); }}
+          >
+            <View style={{ flex: 1 }} />
+          </TouchableWithoutFeedback>
+        </Modal>
+      );
+    }
+    return null;
+  }
+
   render() {
     return (
       <View>
@@ -94,6 +121,7 @@ class GameView extends React.Component {
         <Text>Hit count: {this.state.hitCount}</Text>
         <Text>Bullets left: {Math.max(0, BULLETS_AMOUNT - this.state.shotCount)}</Text>
         {this.renderBrightnessButton()}
+        {this.renderModalOverlay()}
         <KeepAwake />
       </View>
     );

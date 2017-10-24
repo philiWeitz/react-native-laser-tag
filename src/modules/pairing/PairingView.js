@@ -12,9 +12,11 @@ import t from '../../util/locale';
 import BleUtil from '../../util/bleUtil';
 import PairingContainer from './PairingContainer';
 
-import Button from '../../components/button';
-import BleDeviceList from '../../components/bleDeviceList';
-import ModalInfoDialog from '../../components/modalInfoDialog';
+import {
+  Button,
+  BleDeviceList,
+  ModalInfoDialog,
+} from '../../components';
 
 const HM_10_SERVICE = '0000ffe0-0000-1000-8000-00805f9b34fb';
 const HM_10_CHARACTERISTIC = '0000ffe1-0000-1000-8000-00805f9b34fb';

@@ -1,3 +1,4 @@
+// @flow
 
 import {
   NativeModules,
@@ -7,9 +8,11 @@ import {
 } from 'react-native';
 
 import BleManager from 'react-native-ble-manager';
+import type { BleDeviceType, BleCharDataType } from '../model/ModelFlowTypes';
 
 const BleManagerModule = NativeModules.BleManager;
 const BleManagerEmitter = new NativeEventEmitter(BleManagerModule);
+
 
 // function = (device) => {}
 let onDeviceFoundCallback = null;
@@ -20,11 +23,12 @@ let bluetoothEnabled = false;
 // function = (data) => {}
 let dataCallback = null;
 
-function handleDisconnectedPeripheral(data) {
+
+function handleDisconnectedPeripheral(data : BleCharDataType) {
   console.debug(`Disconnected from ${data.peripheral}`);
 }
 
-function handleUpdateValueForCharacteristic(data) {
+function handleUpdateValueForCharacteristic(data : BleCharDataType) {
   console.debug(`Received data from ${data.peripheral} characteristic ${data.characteristic}, ${data.value}`);
   if (dataCallback) {
     dataCallback(data);
@@ -38,20 +42,20 @@ function handleStopScan() {
   }
 }
 
-function handleDiscoverPeripheral(peripheral) {
+function handleDiscoverPeripheral(peripheral : BleDeviceType) {
   if (onDeviceFoundCallback) {
     onDeviceFoundCallback(peripheral);
   }
 }
 
-function handlerBluetoothOnOffState(args) {
+function handlerBluetoothOnOffState(args : {state : boolean}) {
   bluetoothEnabled = args.state === 'on';
   console.debug('Bluetooth state: ', args.state);
 }
 
 const BleUtil = {
 
-  initBleUtil() {
+  initBleUtil() : Promise<null> {
     return new Promise((resolve) => {
       BleManager.start({ showAlert: false })
         .then(() => {
@@ -99,7 +103,7 @@ const BleUtil = {
     });
   },
 
-  setDataCallback(callback) {
+  setDataCallback(callback : ?(BleCharDataType) => mixed) {
     dataCallback = callback;
   },
 
@@ -107,7 +111,8 @@ const BleUtil = {
     return bluetoothEnabled;
   },
 
-  startScanning(onDeviceFound, onScanningStop) {
+  startScanning(onDeviceFound : (BleDeviceType) => mixed, onScanningStop : () => mixed) {
+
     BleManager.scan([], 5, true)
       .then(() => {
         // Success code
@@ -117,19 +122,28 @@ const BleUtil = {
       });
   },
 
-  stopScanning() {
-    return BleManager.stopScan();
+  stopScanning() : Promise<null> {
+    if (bluetoothEnabled) {
+      return BleManager.stopScan();
+    }
+    return Promise.resolve();
   },
 
-  getServices(device) {
-    return BleManager.retrieveServices(device.id);
+  getServices(device : BleDeviceType) : Promise<any> {
+    if (bluetoothEnabled) {
+      return BleManager.retrieveServices(device.id);
+    }
+    return Promise.resolve(null);
   },
 
-  connect(device) {
-    return BleManager.connect(device.id);
+  connect(device : BleDeviceType) : Promise<null> {
+    if (bluetoothEnabled) {
+      return BleManager.connect(device.id);
+    }
+    return Promise.reject();
   },
 
-  async startNotify(id, serviceId, characteristicId) {
+  async startNotify(id : string, serviceId : string, characteristicId : string) {
     const result = await BleManager.startNotification(id, serviceId, characteristicId).catch(() => {
       return false;
     });

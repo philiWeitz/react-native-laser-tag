@@ -1,3 +1,4 @@
+// @flow
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -7,7 +8,7 @@ import AppContainer from './AppContainer';
 import { IntroductionNavigator, GameNavigator } from '../../router';
 
 
-const AppView = ({ deviceId }) => {
+const AppView = ({ deviceId } : { deviceId? : string }) => {
 
   const renderContent = () => {
     if (deviceId) {

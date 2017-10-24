@@ -1,3 +1,4 @@
+// @flow
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
 });
 
 
-const WelcomeView = ({ navigation }) => {
+const WelcomeView = ({ navigation } : { navigation : Object }) => {
 
   const onPairingWithDevicePress = () => {
     if (navigation) {

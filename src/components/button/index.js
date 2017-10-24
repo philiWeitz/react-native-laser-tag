@@ -1,3 +1,4 @@
+// @flow
 
 import React from 'react';
 import {
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 
 import PropTypes from 'prop-types';
+import type { StyleObj } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
 
 const styles = StyleSheet.create({
@@ -23,7 +25,8 @@ const styles = StyleSheet.create({
 });
 
 
-const Button = ({ text, onPress, containerStyle }) => {
+const Button = ({ text, onPress, containerStyle } :
+  { text : string, onPress : () => mixed, containerStyle? : StyleObj }) => {
 
   const onButtonPress = () => {
     if (onPress) {
