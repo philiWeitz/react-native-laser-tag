@@ -3,31 +3,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
-import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import { Text, View } from 'react-native';
 import KeepAwake from 'react-native-keep-awake';
-import Modal from 'react-native-modal';
 
 import GameContainer from './GameContainer';
-import Button from '../../components/button';
+import { Button, ModalLowBrightness } from '../../components';
 
 import BleUtil from '../../util/bleUtil';
 import AudioUtil from '../../util/audioUtil';
-import BrightnessUtil from '../../util/brightnessUtil';
 
 const BULLETS_AMOUNT = 5;
 
 
-type PropTypes = {};
+type ComponentPropTypes = {};
 
-type StateTypes = {
+type ComponentStateTypes = {
   hitCount: number,
   shotCount: number,
-  defaultBrightness: number,
   isBrightnessLowered: boolean,
 };
 
 
-class GameView extends React.Component<PropTypes, StateTypes> {
+class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> {
 
   constructor(props) {
     super(props);
@@ -35,12 +32,10 @@ class GameView extends React.Component<PropTypes, StateTypes> {
     this.state = {
       hitCount: 0,
       shotCount: 0,
-      defaultBrightness: 1.0,
       isBrightnessLowered: false,
     };
 
     autoBind(this);
-    this.getCurrentScreenBrightness();
   }
 
   componentWillMount() {
@@ -49,17 +44,6 @@ class GameView extends React.Component<PropTypes, StateTypes> {
 
   componentWillUnmount() {
     BleUtil.setDataCallback(null);
-  }
-
-  async getCurrentScreenBrightness() {
-    const brightness = await BrightnessUtil.getBrightness();
-    console.debug('Brightness level: ', brightness);
-    this.setState({ defaultBrightness: brightness });
-  }
-
-  setScreenBrightness(brightness) {
-    BrightnessUtil.setBrightness(brightness);
-    this.setState({ isBrightnessLowered: !this.state.isBrightnessLowered });
   }
 
   dataCallback(data) {
@@ -86,32 +70,21 @@ class GameView extends React.Component<PropTypes, StateTypes> {
   }
 
   renderBrightnessButton() {
-    if (this.state.isBrightnessLowered) {
-      return (
-        <Button
-          text="Reset Screen Brightness"
-          onPress={() => { this.setScreenBrightness(this.state.defaultBrightness); }}
-        />
-      );
-    }
     return (
-      <Button text="Lower Screen Brightness" onPress={() => { this.setScreenBrightness(0.0); }} />
+      <Button
+        text="Lower Screen Brightness"
+        onPress={() => { this.setState({ isBrightnessLowered: true }); }}
+      />
     );
   }
 
-  renderModalOverlay() {
-    if (this.state.isBrightnessLowered) {
-      return (
-        <Modal visible transparent animationInTiming={10} animationOutTiming={10} >
-          <TouchableWithoutFeedback
-            onPress={() => { this.setScreenBrightness(this.state.defaultBrightness); }}
-          >
-            <View style={{ flex: 1 }} />
-          </TouchableWithoutFeedback>
-        </Modal>
-      );
-    }
-    return null;
+  renderModalLowBrightness() {
+    return (
+      <ModalLowBrightness
+        isVisible={this.state.isBrightnessLowered}
+        onPress={() => { this.setState({ isBrightnessLowered: false }); }}
+      />
+    );
   }
 
   render() {
@@ -121,7 +94,7 @@ class GameView extends React.Component<PropTypes, StateTypes> {
         <Text>Hit count: {this.state.hitCount}</Text>
         <Text>Bullets left: {Math.max(0, BULLETS_AMOUNT - this.state.shotCount)}</Text>
         {this.renderBrightnessButton()}
-        {this.renderModalOverlay()}
+        {this.renderModalLowBrightness()}
         <KeepAwake />
       </View>
     );

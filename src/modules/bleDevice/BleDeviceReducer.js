@@ -1,6 +1,7 @@
 
 import Immutable from 'immutable';
 import { handleActions, createAction } from 'redux-actions';
+import { APP_REHYDRATE_STORE_START } from '../app/AppReducer';
 
 export const BLE_DEVICE_SET_DEVICE_DATA = createAction('BLE_DEVICE_SET_DEVICE_DATA');
 
@@ -21,6 +22,13 @@ const BleDeviceReducer = handleActions({
     name: action.payload.name,
     characteristic: action.payload.characteristic,
   }),
+
+  [APP_REHYDRATE_STORE_START]: (state, action) => {
+    if (action.payload.bleDevice) {
+      return state.merge(action.payload.bleDevice);
+    }
+    return state;
+  },
 
 }, initialState);
 
