@@ -21,10 +21,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  button: {
-    marginVertical: 20,
-    marginHorizontal: 20,
-  },
 });
 
 
@@ -45,7 +41,6 @@ const WelcomeView = ({ navigation } : { navigation : Object }) => {
         <Button
           text={t('welcome.search_for_devices')}
           onPress={onPairingWithDevicePress}
-          containerStyle={styles.button}
         />
       </View>
     </View>

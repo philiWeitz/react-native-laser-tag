@@ -44,9 +44,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    margin: 20,
+    paddingVertical: 8,
   },
 });
+
+
+const bleIconStyle = {
+  size: 26,
+  style: { marginRight: 10 },
+  name: 'bluetooth-searching',
+};
 
 
 class PairingView extends React.Component {
@@ -171,6 +178,7 @@ class PairingView extends React.Component {
           containerStyle={styles.button}
           text={t('pairing.scan_again')}
           onPress={this.onScanAgainPress}
+          iconLeft={bleIconStyle}
         />
       );
     }

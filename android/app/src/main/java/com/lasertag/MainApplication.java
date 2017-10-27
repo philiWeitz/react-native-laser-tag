@@ -16,6 +16,7 @@ import it.innove.BleManagerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import org.capslock.RNDeviceBrightness.RNDeviceBrightness;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -33,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
           new BleManagerPackage(),
           new RNI18nPackage(),
           new KCKeepAwakePackage(),
-          new RNDeviceBrightness()
+          new RNDeviceBrightness(),
+          new VectorIconsPackage()
       );
     }
   };
