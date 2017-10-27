@@ -150,6 +150,13 @@ const BleUtil = {
     return result === undefined;
   },
 
+  async read(id : string, serviceId : string, characteristicId : string) {
+    const result = await BleManager.read(id, serviceId, characteristicId).catch(() => {
+      return null;
+    });
+    return result;
+  },
+
   destroyBleUtil() {
     this.handlerDiscover.remove();
     this.handlerStop.remove();

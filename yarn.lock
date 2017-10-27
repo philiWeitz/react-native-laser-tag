@@ -4356,6 +4356,10 @@ react-native-keep-awake@2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-2.0.6.tgz#d8eaffe0a6377cc197469d9f06c7f317225403db"
 
+react-native-maps@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"
+
 react-native-mock-render@0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/react-native-mock-render/-/react-native-mock-render-0.0.11.tgz#fa0087044be8c0318e40ec7d85bec29424623f39"

@@ -37,6 +37,7 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A70929731F7E8E7900DE1E53 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A70929721F7E8E6900DE1E53 /* libRNSound.a */; };
+		A70C51F91FA3393A00CFC000 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A70C51D21FA3393000CFC000 /* libAirMaps.a */; };
 		A72BB3911F8F4DB30078709B /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A72BB38D1F8F4D7E0078709B /* libRNI18n.a */; };
 		A72E210A1F8CEBA4008DD0C1 /* media in Resources */ = {isa = PBXBuildFile; fileRef = A72E21091F8CEBA4008DD0C1 /* media */; };
 		A75E23671F85540900D2134A /* libBleManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A75E23481F8553C900D2134A /* libBleManager.a */; };
@@ -243,6 +244,13 @@
 			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
 			remoteInfo = RNSound;
 		};
+		A70C51D11FA3393000CFC000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A70C51CD1FA3393000CFC000 /* AirMaps.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
+			remoteInfo = AirMaps;
+		};
 		A72BB38C1F8F4D7E0078709B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A72BB3691F8F4D7E0078709B /* RNI18n.xcodeproj */;
@@ -355,6 +363,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A709296D1F7E8E6900DE1E53 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
+		A70C51CD1FA3393000CFC000 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		A72BB3691F8F4D7E0078709B /* RNI18n.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		A72E21091F8CEBA4008DD0C1 /* media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = media; path = ../media; sourceTree = "<group>"; };
 		A75E23431F8553C900D2134A /* BleManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BleManager.xcodeproj; path = "../node_modules/react-native-ble-manager/ios/BleManager.xcodeproj"; sourceTree = "<group>"; };
@@ -377,6 +386,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70C51F91FA3393A00CFC000 /* libAirMaps.a in Frameworks */,
 				A7C58F811FA1D24C009B78E3 /* libRNVectorIcons.a in Frameworks */,
 				A7F958621F94D531006327C5 /* libRNDeviceBrightness.a in Frameworks */,
 				A7F9585B1F94D3AC006327C5 /* libKCKeepAwake.a in Frameworks */,
@@ -556,6 +566,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A70C51CD1FA3393000CFC000 /* AirMaps.xcodeproj */,
 				A7C58F511FA1D23D009B78E3 /* RNVectorIcons.xcodeproj */,
 				A7F9585C1F94D525006327C5 /* RNDeviceBrightness.xcodeproj */,
 				A7F958341F94D39C006327C5 /* KCKeepAwake.xcodeproj */,
@@ -617,6 +628,14 @@
 			isa = PBXGroup;
 			children = (
 				A70929721F7E8E6900DE1E53 /* libRNSound.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A70C51CE1FA3393000CFC000 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A70C51D21FA3393000CFC000 /* libAirMaps.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -784,6 +803,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = A70C51CE1FA3393000CFC000 /* Products */;
+					ProjectRef = A70C51CD1FA3393000CFC000 /* AirMaps.xcodeproj */;
+				},
 				{
 					ProductGroup = A75E23441F8553C900D2134A /* Products */;
 					ProjectRef = A75E23431F8553C900D2134A /* BleManager.xcodeproj */;
@@ -1044,6 +1067,13 @@
 			fileType = archive.ar;
 			path = libRNSound.a;
 			remoteRef = A70929711F7E8E6900DE1E53 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A70C51D21FA3393000CFC000 /* libAirMaps.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAirMaps.a;
+			remoteRef = A70C51D11FA3393000CFC000 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A72BB38D1F8F4D7E0078709B /* libRNI18n.a */ = {

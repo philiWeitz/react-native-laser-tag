@@ -153,6 +153,7 @@ dependencies {
     compile project(':react-native-keep-awake')
     compile project(':react-native-device-brightness')
     compile project(':react-native-vector-icons')
+    compile project(':react-native-maps')
 }
 
 // Run this once to be able to run the application with BUCK

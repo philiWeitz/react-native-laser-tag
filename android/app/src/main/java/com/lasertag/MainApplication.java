@@ -17,6 +17,7 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import org.capslock.RNDeviceBrightness.RNDeviceBrightness;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -35,7 +36,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNI18nPackage(),
           new KCKeepAwakePackage(),
           new RNDeviceBrightness(),
-          new VectorIconsPackage()
+          new VectorIconsPackage(),
+          new MapsPackage()
       );
     }
   };
