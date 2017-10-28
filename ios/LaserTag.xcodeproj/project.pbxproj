@@ -41,6 +41,7 @@
 		A72BB3911F8F4DB30078709B /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A72BB38D1F8F4D7E0078709B /* libRNI18n.a */; };
 		A72E210A1F8CEBA4008DD0C1 /* media in Resources */ = {isa = PBXBuildFile; fileRef = A72E21091F8CEBA4008DD0C1 /* media */; };
 		A75E23671F85540900D2134A /* libBleManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A75E23481F8553C900D2134A /* libBleManager.a */; };
+		A79029231FA4B12C0003C73C /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A790291D1FA4B11E0003C73C /* libReactNativeConfig.a */; };
 		A7C58F811FA1D24C009B78E3 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C58F7F1FA1D23D009B78E3 /* libRNVectorIcons.a */; };
 		A7C58F881FA1E3A3009B78E3 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = A7C58F871FA1E3A2009B78E3 /* Fonts */; };
 		A7F9585B1F94D3AC006327C5 /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F9583A1F94D39C006327C5 /* libKCKeepAwake.a */; };
@@ -272,6 +273,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = BleManager;
 		};
+		A790291C1FA4B11E0003C73C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A79028F61FA4B11E0003C73C /* ReactNativeConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EB2648DF1C7BE17A00B8F155;
+			remoteInfo = ReactNativeConfig;
+		};
 		A7BE96321F5ECE9000B95666 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -367,6 +375,7 @@
 		A72BB3691F8F4D7E0078709B /* RNI18n.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		A72E21091F8CEBA4008DD0C1 /* media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = media; path = ../media; sourceTree = "<group>"; };
 		A75E23431F8553C900D2134A /* BleManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BleManager.xcodeproj; path = "../node_modules/react-native-ble-manager/ios/BleManager.xcodeproj"; sourceTree = "<group>"; };
+		A79028F61FA4B11E0003C73C /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		A7C58F511FA1D23D009B78E3 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		A7C58F871FA1E3A2009B78E3 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		A7F958341F94D39C006327C5 /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
@@ -386,6 +395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A79029231FA4B12C0003C73C /* libReactNativeConfig.a in Frameworks */,
 				A70C51F91FA3393A00CFC000 /* libAirMaps.a in Frameworks */,
 				A7C58F811FA1D24C009B78E3 /* libRNVectorIcons.a in Frameworks */,
 				A7F958621F94D531006327C5 /* libRNDeviceBrightness.a in Frameworks */,
@@ -566,6 +576,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A79028F61FA4B11E0003C73C /* ReactNativeConfig.xcodeproj */,
 				A70C51CD1FA3393000CFC000 /* AirMaps.xcodeproj */,
 				A7C58F511FA1D23D009B78E3 /* RNVectorIcons.xcodeproj */,
 				A7F9585C1F94D525006327C5 /* RNDeviceBrightness.xcodeproj */,
@@ -653,6 +664,14 @@
 			isa = PBXGroup;
 			children = (
 				A75E23481F8553C900D2134A /* libBleManager.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A79028F71FA4B11E0003C73C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A790291D1FA4B11E0003C73C /* libReactNativeConfig.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -858,6 +877,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = A79028F71FA4B11E0003C73C /* Products */;
+					ProjectRef = A79028F61FA4B11E0003C73C /* ReactNativeConfig.xcodeproj */;
 				},
 				{
 					ProductGroup = A7F9585D1F94D525006327C5 /* Products */;
@@ -1095,6 +1118,13 @@
 			fileType = archive.ar;
 			path = libBleManager.a;
 			remoteRef = A75E23471F8553C900D2134A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A790291D1FA4B11E0003C73C /* libReactNativeConfig.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeConfig.a;
+			remoteRef = A790291C1FA4B11E0003C73C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A7BE96331F5ECE9000B95666 /* libthird-party.a */ = {

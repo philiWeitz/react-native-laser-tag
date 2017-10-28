@@ -1,5 +1,6 @@
 // @flow
 
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
@@ -21,6 +22,7 @@ type ComponentStateTypes = {
   hitCount: number,
   shotCount: number,
   isBrightnessLowered: boolean,
+  bleOutput: string,
 };
 
 
@@ -33,6 +35,7 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
       hitCount: 0,
       shotCount: 0,
       isBrightnessLowered: false,
+      bleOutput: '',
     };
 
     autoBind(this);
@@ -48,12 +51,13 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
 
   dataCallback(data) {
     console.debug('Data received: ', data);
+    this.setState({ bleOutput: data.value });
 
-    if (data.value.startsWith('HIT')) {
+    if (_.startsWith(data.value, 'HIT')) {
       this.setState({ hitCount: this.state.hitCount + 1 });
       AudioUtil.playDying();
 
-    } else if (data.value.startsWith('FIRE')) {
+    } else if (_.startsWith(data.value, 'FIRE')) {
       // if the shot count is bigger than the bullet size -> don't play a sound
       if (this.state.shotCount <= BULLETS_AMOUNT) {
         this.setState({ shotCount: this.state.shotCount + 1 });
@@ -72,6 +76,7 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
   renderBrightnessButton() {
     return (
       <Button
+        containerStyle={{ marginTop: 20 }}
         text="Lower Screen Brightness"
         onPress={() => { this.setState({ isBrightnessLowered: true }); }}
       />
@@ -95,6 +100,7 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
         <Text>Bullets left: {Math.max(0, BULLETS_AMOUNT - this.state.shotCount)}</Text>
         {this.renderBrightnessButton()}
         {this.renderModalLowBrightness()}
+        <Text style={{ marginTop: 20 }}>{this.state.bleOutput}</Text>
         <KeepAwake />
       </View>
     );

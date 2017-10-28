@@ -18,8 +18,12 @@ import {
   ModalInfoDialog,
 } from '../../components';
 
-const HM_10_SERVICE = '0000ffe0-0000-1000-8000-00805f9b34fb';
-const HM_10_CHARACTERISTIC = '0000ffe1-0000-1000-8000-00805f9b34fb';
+
+// const HM_10_SERVICE = '0000ffe0-0000-1000-8000-00805f9b34fb';
+// const HM_10_CHARACTERISTIC = '0000ffe1-0000-1000-8000-00805f9b34fb';
+
+const POLAR_SERVICE = '180d';
+const POLAR_CHARACTERISTIC = '2a37';
 
 
 function getHM10Characteristic(services) {
@@ -31,8 +35,8 @@ function getHM10Characteristic(services) {
   // get the correct characteristics for the HM-10 module
   return _.find(services.characteristics, (item) => {
     if (item.service && item.characteristic) {
-      return item.service.toLowerCase() === HM_10_SERVICE &&
-        item.characteristic.toLowerCase() === HM_10_CHARACTERISTIC;
+      return item.service.toLowerCase() === POLAR_SERVICE &&
+        item.characteristic.toLowerCase() === POLAR_CHARACTERISTIC;
     }
     return false;
   });
@@ -75,10 +79,6 @@ class PairingView extends React.Component {
     BleUtil.initBleUtil().then(() => {
       this.onScanAgainPress();
     });
-  }
-
-  componentWillUnmount() {
-    BleUtil.destroyBleUtil();
   }
 
   onBleScanningStop() {
@@ -127,7 +127,6 @@ class PairingView extends React.Component {
       this.props.setBleDeviceData({
         name: services.name,
         id: services.id,
-        characteristic,
 
       }).then(() => {
         this.navigateToGameView();
