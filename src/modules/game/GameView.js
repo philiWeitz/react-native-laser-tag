@@ -10,6 +10,7 @@ import KeepAwake from 'react-native-keep-awake';
 import GameContainer from './GameContainer';
 import { Button, ModalLowBrightness } from '../../components';
 
+import t from '../../util/locale';
 import BleUtil from '../../util/bleUtil';
 import AudioUtil from '../../util/audioUtil';
 
@@ -77,7 +78,7 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
     return (
       <Button
         containerStyle={{ marginTop: 20 }}
-        text="Lower Screen Brightness"
+        text={t('game.lower_screen_brightness')}
         onPress={() => { this.setState({ isBrightnessLowered: true }); }}
       />
     );

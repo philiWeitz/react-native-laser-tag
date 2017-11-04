@@ -1,33 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`component-button-tests button snapshot test 1`] = `
-<TouchableOpacity
-  activeOpacity={0.2}
-  onPress={[Function]}
-  style={
+<Button
+  borderRadius={5}
+  buttonStyle={
+    Object {
+      "backgroundColor": "#008CBA",
+      "flexDirection": "row",
+    }
+  }
+  containerViewStyle={
     Array [
       Object {
-        "backgroundColor": "gray",
-        "flexDirection": "row",
-        "paddingVertical": 10,
+        "marginLeft": 0,
+        "marginRight": 0,
       },
       Object {},
     ]
   }
->
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    style={
-      Object {
-        "flex": 1,
-        "textAlign": "center",
-      }
+  icon={Object {}}
+  iconRight={Object {}}
+  onPress={[Function]}
+  raised={true}
+  textStyle={
+    Object {
+      "textAlign": "center",
     }
-  >
-    Button Test
-  </Text>
-</TouchableOpacity>
+  }
+  title="Button Test"
+/>
 `;

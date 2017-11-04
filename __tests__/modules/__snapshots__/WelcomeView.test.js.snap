@@ -18,12 +18,10 @@ exports[`welcome-view-connected-tests shallow welcome view snapshot test 1`] = `
     }
   >
     <Button
-      containerStyle={
-        Object {
-          "marginHorizontal": 20,
-          "marginVertical": 20,
-        }
-      }
+      containerStyle={Object {}}
+      icon={Object {}}
+      iconLeft={Object {}}
+      iconRight={Object {}}
       onPress={[Function]}
       text=""
     />

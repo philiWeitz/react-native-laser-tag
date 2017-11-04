@@ -4,6 +4,8 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
+import t from '../util/locale';
+
 import WelcomeView from '../modules/welcome/WelcomeView';
 import PairingView from '../modules/pairing/PairingView';
 import GameView from '../modules/game/GameView';
@@ -19,14 +21,14 @@ const IntroductionNavigator = StackNavigator({
   Intro: {
     screen: WelcomeView,
     navigationOptions: {
-      title: 'Laser Tag',
+      title: t('title.welcome_view'),
       ...headerOptions,
     },
   },
   Pairing: {
     screen: PairingView,
     navigationOptions: {
-      title: 'Pairing',
+      title: t('title.pairing_view'),
       ...headerOptions,
     },
   },
@@ -41,7 +43,7 @@ const GameNavigator = StackNavigator({
   GameFrontPage: {
     screen: GameView,
     navigationOptions: {
-      title: 'Game',
+      title: t('title.game_view'),
       ...headerOptions,
     },
   },

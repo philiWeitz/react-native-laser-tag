@@ -52,7 +52,8 @@ const Button = ({ text, onPress, containerStyle, iconRight, iconLeft }
         borderRadius={5}
         onPress={onButtonPress}
         textStyle={{ textAlign: 'center' }}
-        buttonStyle={[styles.container, containerStyle]}
+        buttonStyle={styles.container}
+        containerViewStyle={[{ marginLeft: 0, marginRight: 0 }, containerStyle]}
       />
     );
   };

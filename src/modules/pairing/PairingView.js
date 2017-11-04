@@ -16,6 +16,7 @@ import {
   Button,
   BleDeviceList,
   ModalInfoDialog,
+  ModalBleSettingsDialog,
 } from '../../components';
 
 
@@ -48,7 +49,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    paddingVertical: 8,
+    marginVertical: 8,
+    marginLeft: 20,
+    marginRight: 20,
   },
 });
 
@@ -211,10 +214,8 @@ class PairingView extends React.Component {
 
   renderBluetoothDisabledModalDialog() {
     return (
-      <ModalInfoDialog
+      <ModalBleSettingsDialog
         isVisible={this.state.showBluetoothDisabledDialog}
-        headerText={t('pairing.bluetooth_disabled_heading')}
-        contentText={t('pairing.bluetooth_disabled_content')}
         onButtonPress={() => { this.setState({ showBluetoothDisabledDialog: false }); }}
       />
     );

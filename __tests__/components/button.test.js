@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import enzymeToJson from 'enzyme-to-json';
 
-import { TouchableOpacity } from 'react-native';
+import { Button as ReactNativeButton } from 'react-native-elements';
 import Button from '../../src/components/button/index';
 
 
@@ -23,7 +23,7 @@ describe('component-button-tests', () => {
       <Button onPress={() => { buttonPressed = true; }} text="Button Test" />,
     );
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    wrapper.find(ReactNativeButton).simulate('press');
     expect(buttonPressed).toBe(true);
   });
 

@@ -9,6 +9,7 @@ import {
 
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
+import BleUtil from '../../util/bleUtil';
 
 import Button from '../button';
 import t from '../../util/locale';
@@ -25,13 +26,27 @@ const styles = StyleSheet.create({
   bodyText: {
     marginBottom: 20,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginLeft: 15,
+  },
 });
 
 
-const ModalInfoDialog = ({ isVisible, headerText, contentText, onButtonPress } : {
-  isVisible : boolean, headerText : string, contentText : string, onButtonPress : () => null }) => {
+const ModalBleSettingsDialog = ({ isVisible, onButtonPress } : {
+  isVisible : boolean, onButtonPress : () => null }) => {
 
   const onOkButtonClick = () => {
+    if (onButtonPress) {
+      onButtonPress();
+    }
+  };
+
+  const onEnableButtonClick = async () => {
+    await BleUtil.openBluetoothSettings();
     if (onButtonPress) {
       onButtonPress();
     }
@@ -40,7 +55,7 @@ const ModalInfoDialog = ({ isVisible, headerText, contentText, onButtonPress } :
   const renderHeader = () => {
     return (
       <View>
-        <Text style={styles.headerText}>{headerText}</Text>
+        <Text style={styles.headerText}>{t('pairing.bluetooth_disabled_heading')}</Text>
       </View>
     );
   };
@@ -48,14 +63,17 @@ const ModalInfoDialog = ({ isVisible, headerText, contentText, onButtonPress } :
   const renderBody = () => {
     return (
       <View>
-        <Text style={styles.bodyText}>{contentText}</Text>
+        <Text style={styles.bodyText}>{t('pairing.bluetooth_disabled_content')}</Text>
       </View>
     );
   };
 
   const renderFooter = () => {
     return (
-      <Button text={t('button.ok')} onPress={onOkButtonClick} />
+      <View style={styles.buttonContainer}>
+        <Button containerStyle={styles.button} text={t('button.cancel')} onPress={onOkButtonClick} />
+        <Button containerStyle={styles.button} text={t('button.enable')} onPress={onEnableButtonClick} />
+      </View>
     );
   };
 
@@ -77,17 +95,13 @@ const ModalInfoDialog = ({ isVisible, headerText, contentText, onButtonPress } :
   return renderContent();
 };
 
-ModalInfoDialog.propTypes = {
+ModalBleSettingsDialog.propTypes = {
   isVisible: PropTypes.bool,
-  headerText: PropTypes.string,
-  contentText: PropTypes.string,
   onButtonPress: PropTypes.func.isRequired,
 };
 
-ModalInfoDialog.defaultProps = {
+ModalBleSettingsDialog.defaultProps = {
   isVisible: false,
-  headerText: '',
-  contentText: '',
 };
 
-export default ModalInfoDialog;
+export default ModalBleSettingsDialog;

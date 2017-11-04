@@ -4,6 +4,7 @@ import {
   NativeModules,
   NativeEventEmitter,
   Platform,
+  Linking,
   PermissionsAndroid,
 } from 'react-native';
 
@@ -155,6 +156,16 @@ const BleUtil = {
       return null;
     });
     return result;
+  },
+
+  async openBluetoothSettings() : Promise<boolean> {
+    if (Platform.OS === 'android') {
+      const result = await BleManager.enableBluetooth().catch(() => {
+        return false;
+      });
+      return result === undefined;
+    }
+    return Linking.openURL('app-settings:{3}');
   },
 
   destroyBleUtil() {

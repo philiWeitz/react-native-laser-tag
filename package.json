@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android-dev": "ENVFILE=./config/.env react-native run-android",
+    "ios-dev": "ENVFILE=./config/.env react-native run-ios",
     "eslint": "eslint ./src",
     "flow": "flow",
     "test": "jest",
     "ci": "sh ./scripts/ci.sh",
-    "prepush": "npm run ci",
+    "prepush": "npm run ci"
   },
   "dependencies": {
     "babel-eslint": "8.0.1",
