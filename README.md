@@ -3,7 +3,7 @@
 | :-------------| :------------|
 | Travis CI     | [![Build Status](https://travis-ci.org/philiWeitz/react-native-laser-tag.svg?branch=development)](https://travis-ci.org/philiWeitz/react-native-laser-tag) |
 | React         | [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=16.0.0-beta.5&x2=0)](https://reactjs.org/docs/hello-world.html) |
-| React native  | [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.49.3&x2=0)](http://facebook.github.io/react-native/releases/0.49)
+| React native  | [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.49.3&x2=0)](http://facebook.github.io/react-native/releases/0.49) |
 
 # React Native Laser Tag
 

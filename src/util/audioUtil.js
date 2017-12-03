@@ -2,17 +2,13 @@
 
 import Sound from 'react-native-sound';
 
-const reload = require('../../media/reload.mp3');
-const gunShot = require('../../media/gunshot.mp3');
-const dying = require('../../media/dying.mp3');
-
 Sound.setCategory('Playback', true);
 
-function playSoundEffect(audioFile) {
+function playSoundEffect(audio) {
   return new Promise((resolve, reject) => {
-    const sound = new Sound(audioFile, (error) => {
+    const sound = new Sound(audio,Sound.MAIN_BUNDLE, (error) => {
       if (error) {
-        console.error(`failed to load the sound file ${audioFile}`, error);
+        console.error(`failed to load the sound file ${audio}`, error);
         reject();
       }
       sound.play(() => {
@@ -25,16 +21,20 @@ function playSoundEffect(audioFile) {
 
 const AudioUtil = {
 
-  async playGunShot() : Promise<any> {
-    return playSoundEffect(gunShot);
+  async playAk47GunShot() : Promise<any> {
+    return playSoundEffect("ak47_shot");
+  },
+
+  async playShotgunShot() : Promise<any> {
+    return playSoundEffect("shotgun_shot");
   },
 
   async playReload() : Promise<any> {
-    return playSoundEffect(reload);
+    return playSoundEffect("reload");
   },
 
-  async playDying() : Promise<any> {
-    return playSoundEffect(dying);
+  async playHit() : Promise<any> {
+    return playSoundEffect("hit");
   },
 
 };

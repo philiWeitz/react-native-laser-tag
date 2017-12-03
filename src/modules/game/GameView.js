@@ -1,10 +1,10 @@
-// @flow
 
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import { Text, View } from 'react-native';
+import { bytesToString } from 'convert-string';
 import KeepAwake from 'react-native-keep-awake';
 
 import GameContainer from './GameContainer';
@@ -37,6 +37,7 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
       shotCount: 0,
       isBrightnessLowered: false,
       bleOutput: '',
+      playGunShot: AudioUtil.playAk47GunShot,
     };
 
     autoBind(this);
@@ -51,14 +52,16 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
   }
 
   dataCallback(data) {
-    console.debug('Data received: ', data);
-    this.setState({ bleOutput: data.value });
+    console.debug('Data received: ', bytesToString(data.value));
 
-    if (_.startsWith(data.value, 'HIT')) {
+    const strValue = bytesToString(data.value);
+    this.setState({ bleOutput: strValue });
+
+    if (_.startsWith(strValue, 'HIT')) {
       this.setState({ hitCount: this.state.hitCount + 1 });
-      AudioUtil.playDying();
+      AudioUtil.playHit();
 
-    } else if (_.startsWith(data.value, 'FIRE')) {
+    } else if (_.startsWith(strValue, 'FIRE')) {
       // if the shot count is bigger than the bullet size -> don't play a sound
       if (this.state.shotCount <= BULLETS_AMOUNT) {
         this.setState({ shotCount: this.state.shotCount + 1 });
@@ -68,7 +71,7 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
             this.setState({ shotCount: 0 });
           });
         } else {
-          AudioUtil.playGunShot();
+          this.state.playGunShot();
         }
       }
     }
@@ -81,6 +84,23 @@ class GameView extends React.Component<ComponentPropTypes, ComponentStateTypes> 
         text={t('game.lower_screen_brightness')}
         onPress={() => { this.setState({ isBrightnessLowered: true }); }}
       />
+    );
+  }
+
+  renderWeaponButton() {
+    return (
+      <View>
+        <Button
+          containerStyle={{ marginTop: 20 }}
+          text="AK47"
+          onPress={() => { this.setState({ playGunShot: AudioUtil.playAk47GunShot }); }}
+        />
+        <Button
+          containerStyle={{ marginTop: 20 }}
+          text="Shotgun"
+          onPress={() => { this.setState({ playGunShot: AudioUtil.playShotgunShot }); }}
+        />
+      </View>
     );
   }
 

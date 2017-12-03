@@ -118,6 +118,14 @@ android {
             GOOGLE_MAPS_API_KEY:project.env.get("GOOGLE_MAPS_API_KEY")
         ]
     }
+    signingConfigs {
+        release {
+            storeFile file('../keystores/release.jks')
+            storePassword project.env.get("KEY_STORE_PWD")
+            keyAlias project.env.get("KEY_STORE_ALIAS")
+            keyPassword project.env.get("KEY_STORE_ALIAS_PWD")
+        }
+    }
     splits {
         abi {
             reset()
@@ -130,6 +138,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -167,4 +176,13 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+task copyMediaFiles(type: Copy) {
+    description = 'copying some file(s)....'
+    from '../../media/'
+    into './src/main/res/raw'
+}
+gradle.projectsEvaluated {
+     preBuild.dependsOn(copyMediaFiles)
 }

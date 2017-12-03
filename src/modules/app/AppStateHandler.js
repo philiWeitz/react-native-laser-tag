@@ -20,7 +20,7 @@ const AppStateHandler = {
     // states: active, inactive, background
     console.debug('App state change, next app state: ', nextAppState);
 
-    if (nextAppState === 'inactive') {
+    if (nextAppState === 'background') {
       // persist state when app goes gets inactive
       AsyncStoreUtil.persistStore(JSON.stringify(store));
     }

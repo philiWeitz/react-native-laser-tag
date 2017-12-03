@@ -22,9 +22,9 @@ const BleDeviceReducer = handleActions({
   }),
 
   [APP_REHYDRATE_STORE_START]: (state, action) => {
-    if (action.payload.bleDevice) {
-      return state.merge(action.payload.bleDevice);
-    }
+    // if (action.payload.bleDevice) {
+    //  return state.merge(action.payload.bleDevice);
+    // }
     return state;
   },
 
